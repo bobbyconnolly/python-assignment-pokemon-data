@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Team Analysis - Working with Lists of Dictionaries (Basic Operations)</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h3 {
+    color: #333;
+}
+
+h2 {
+    background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+h2::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+}
+
+h2:hover::before {
+    transform: translateX(100%);
+}
+
+pre {
+    background-color: #e6e6e6;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+.output {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.note {
+    background-color: #ffffd9;
+    border-left: 5px solid #ffeb3b;
+    padding: 10px;
+    margin: 10px 0;
+}
+.note2 {
+    background-color: #f3e5f5; /* Light purple */
+    border-left: 5px solid #9c27b0; /* Darker purple */
+    padding: 10px;
+    margin: 10px 0;
+}
+.note3 {
+    background-color: #ffebee;
+    border-left: 5px solid #f44336;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+.language-features {
+    background-color: #e8f5e9;
+    border-left: 5px solid #4caf50;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+ol > li::marker {
+  font-weight: bold;
+}
+ol li {
+    margin-bottom: 20px;
+}
+.highlight { background-color: #ffeb3b;}
+.highlight2 { background-color: #ff413b;}
+
+.keyword { color: #0000FF; }
+.string { color: #a31515; }
+.number { color: #098658; }
+.comment { 
+    color: #008000;
+}
+.function {
+    color: #795e26;
+}
+.your-code-here { 
+    background-color: #ffcccb;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    body > ol {
+        padding-left: 0;
+        margin-right: -20px;
+        padding-right: 20px;
+    }
+    
+    pre, .output {
+        font-size: 14px;
+    }
+}
+    </style>
+</head>
+<body>
+
+        <div class="note3">
+            <h3>Important Instructions:</h3>
+            <ol>
+                <li>Type all code into Jupyter Notebook cells. Use comments at the top of each cell to indicate which problem you're working on.</li>
+                <li>You can use multiple cells for each problem if needed.</li>
+                <li>Remember to run cells after making changes to ensure old side-effects are replaced with new ones, especially when updating function definitions.</li>
+                <li>Try to work out the solutions on your own before seeking help. Avoid simply going to ChatGPT for answers.</li>
+                <li>The data for this assignment is available on Teams. You may need to use your mouse to drag-select the text for copying, as the Teams copy button might strip away newlines.</li>
+                <li>Take regular breaks to maintain focus and productivity.</li>
+            </ol>
+        </div>
+        
+        <div class="language-features">
+            <h3>Useful Python Features:</h3>
+            <ul>
+                <li><code>len(list)</code>: Returns the number of items in a list</li>
+                <li><code>sum(list)</code>: Calculates the sum of all items in a list</li>
+                <li><code>list[index]</code>: Accesses an item in a list at the specified index</li>
+                <li><code>dict["key"]</code>: Accesses a value in a dictionary using its key</li>
+                <li><code>for item in iterable:</code>: Loops through items in a list or dictionary</li>
+                <li><code>def function_name(parameters):</code>: Defines a new function</li>
+                <li><code>return value</code>: Specifies what a function should output</li>
+            </ul>
+        </div>
+
+    <h2>Pokemon Tuple Operations - Question 1</h2>
+
+<p>As a Pokemon researcher, you're working with some complex data structures. You have information about Pokemon stored in tuples, including their name, type, and various stats.</p>
+
+<h3>Given Data:</h3>
+<pre>
+<span class="comment"># A list of tuples</span>
+<span class="comment"># Data is available on Teams (Week 08)</span>
+<span class="">pokemon_data</span> = [
+    (<span class="string">"Pikachu"</span>, <span class="string">"Electric"</span>, <span class="number">35</span>, <span class="number">55</span>, <span class="number">40</span>, <span class="number">90</span>),
+    (<span class="string">"Charizard"</span>, <span class="string">"Fire/Flying"</span>, <span class="number">78</span>, <span class="number">84</span>, <span class="number">78</span>, <span class="number">100</span>),
+    (<span class="string">"Blastoise"</span>, <span class="string">"Water"</span>, <span class="number">79</span>, <span class="number">83</span>, <span class="number">100</span>, <span class="number">78</span>),
+    (<span class="string">"Venusaur"</span>, <span class="string">"Grass/Poison"</span>, <span class="number">80</span>, <span class="number">82</span>, <span class="number">83</span>, <span class="number">80</span>),
+    (<span class="string">"Gengar"</span>, <span class="string">"Ghost/Poison"</span>, <span class="number">60</span>, <span class="number">65</span>, <span class="number">60</span>, <span class="number">110</span>)
+]
+</pre>
+
+<p>Each tuple contains the following information in order: (Name, Type, HP, Attack, Defense, Speed)</p>
+
+<div class="note">
+<strong>Note on tuple unpacking:</strong> Tuple unpacking allows you to assign the elements of a tuple to multiple variables in a single operation. For example:
+<pre>
+name, type, <span class="highlight">*</span>stats = pokemon_data[<span class="number">0</span>]
+<span class="function">print</span>(name)   <span class="comment"># Prints: Pikachu</span>
+<span class="function">print</span>(stats)  <span class="comment"># Prints: [35, 55, 40, 90]</span>
+</pre>
+The asterisk (<span class="highlight">*</span>) before 'stats' collects all remaining values into a list.
+</div>
+
+<h3>Tasks:</h3>
+
+<ol>
+    <li>Create a function that takes a Pokemon tuple and returns a formatted string with the Pokemon's name and type. Use this function to print information for all Pokemon in the dataset.
+    <pre>
+<span class="keyword">def</span> <span class="function">format_pokemon_info</span>(pokemon_tuple):
+    <span class="your-code-here">Your code here</span>, *_ = pokemon_tuple
+    <span class="comment"># Hint: Use tuple unpacking</span>
+
+<span class="comment"># Use your function here to print info for all Pokemon</span>
+    </pre>
+    Expected output:
+    <div class="output">
+    Pikachu is an Electric type Pokemon.
+    <br />Charizard is a Fire/Flying type Pokemon.
+    <br />Blastoise is a Water type Pokemon.
+    <br />Venusaur is a Grass/Poison type Pokemon.
+    <br />Gengar is a Ghost/Poison type Pokemon.
+    </div>
+    </li>
+
+    
+    <div class="note">
+        <strong>Note on underscore (_) in unpacking:</strong> When unpacking tuples or lists, we use an underscore (_) as a variable name to indicate that we don't intend to use that particular value. It's a convention that tells other programmers (and reminds ourselves) that this value is deliberately unused in our code. It can be combined with the asterisk (*_) when we don't need the rest of the values.
+    </div>
+
+    <li>
+        Find the Pokemon with the highest speed stat. Complete the code by using the provided 
+        <code>get_speed</code> function correctly as the <code>key</code> parameter.
+        
+        <pre>
+<span class="comment"># This function extracts the 'speed' value from a given Pokemon dictionary.</span>
+<span class="comment"># It's useful as a key function for max(), allowing us to compare Pokemon by speed.</span>
+<span class="keyword">def</span> <span class="function">get_speed</span>(pokemon):
+    <span class="keyword">return</span> pokemon[<span class="string">"speed"</span>]
+
+<span class="comment"># A list of dictionaries</span>
+<span class="comment"># Data is available on Teams (Week 08)</span>
+pokemon_speed_list = [
+    {<span class="string">"name"</span>: <span class="string">"Pikachu"</span>, <span class="string">"speed"</span>: <span class="number">90</span>},
+    {<span class="string">"name"</span>: <span class="string">"Charizard"</span>, <span class="string">"speed"</span>: <span class="number">100</span>},
+    {<span class="string">"name"</span>: <span class="string">"Gengar"</span>, <span class="string">"speed"</span>: <span class="number">110</span>},
+    {<span class="string">"name"</span>: <span class="string">"Bulbasaur"</span>, <span class="string">"speed"</span>: <span class="number">45</span>}
+]
+
+<span class="comment"># Use the get_speed function correctly as the key</span>
+fastest_pokemon = <span class="function">max</span>(pokemon_speed_list, <span class="missing-code">key=<span class="your-code-here">Your code here</span></span>)
+
+<span class="function">print</span>(<span class="string">f"The fastest Pokemon is {fastest_pokemon['name']} with a speed of {fastest_pokemon['speed']}."</span>)
+        </pre>
+      
+        Expected output:
+        <div class="output">
+          The fastest Pokemon is Gengar with a speed of 110.
+        </div>
+    </li>
+
+    <div class="note2">
+        <strong>Note on higher-order functions:</strong> 
+        <p>
+            Higher-order functions are functions that can accept other functions as arguments. When using higher-order functions like <code>max()</code> with a <code>key</code> parameter, you should pass the function itself, not its result.
+        </p>
+        <pre>
+<span class="comment"># Correct: Passing the function itself</span>
+fastest_pokemon = <span class="function">max</span>(pokemon_speed_list, key=get_speed)  <span class="comment"># Don't call get_speed here: pass the function as an argument instead.</span>
+
+<span class="comment"># Incorrect: Calling the function</span>
+fastest_pokemon = <span class="function">max</span>(pokemon_speed_list, key=get_speed<span class="highlight2">()</span>)  <span class="comment"># Don't do this!</span>
+        </pre>
+        <p>
+            In the correct example, <code>get_speed</code> is passed as an argument without parentheses. The <code>max()</code> function will call <code>get_speed</code> internally for each item in the list to determine the maximum.
+        </p>
+    </div>
+    
+    <li>Calculate and print the average HP of all Pokemon in the dataset.
+    <pre>
+<span class="your-code-here">Your code here</span>
+<span class="comment"># Hint: Remember that HP is the third element in each tuple</span>
+    </pre>
+    Expected output:
+    <div class="output">
+    The average HP of all Pokemon is 66.4.
+    </div>
+    </li>
+
+    <li>Create a new list of tuples containing only the name and total stats (sum of HP, Attack, Defense, and Speed) for each Pokemon. Then sort this list by total stats in descending order. Follow these steps:
+
+        <ol>
+            <li>Create an empty list called <code>stats_list</code>.</li>
+            <li>Loop through each Pokemon in <code>pokemon_data</code>.</li>
+            <li>For each Pokemon:
+                <ul>
+                    <li>Extract the name (first element of the tuple).</li>
+                    <li>Calculate the total stats by summing HP, Attack, Defense, and Speed.</li>
+                    <li>Append a tuple of (name, total_stats) to <code>stats_list</code>.</li>
+                </ul>
+            </li>
+            <li>Sort <code>stats_list</code> based on the total stats in descending order.</li>
+            <li>Print the sorted <code>stats_list</code>.</li>
+        </ol>
+        
+        <pre>
+<span class="your-code-here">Your code here</span>
+stats_list = []
+
+<span class="keyword">for</span> pokemon <span class="keyword">in</span> pokemon_data:
+    <span class="comment"># Step 1: Extract the name</span>
+    name = <span class="your-code-here">Your code here</span>
+    
+    <span class="comment"># Step 2: Calculate total stats</span>
+    total_stats = <span class="your-code-here">Your code here</span>
+    
+    <span class="comment"># Step 3: Append to stats_list</span>
+    <span class="your-code-here">Your code here</span>
+
+<span class="comment"># Step 4: Sort stats_list (hint: use the sorted() function with a custom key)</span>
+stats_list = <span class="function">sorted</span>(stats_list, key=<span class="your-code-here">Your code here</span>, reverse=<span class="number">True</span>)
+
+<span class="comment"># Step 5: Print the result</span>
+<span class="function">print</span>(stats_list)
+        </pre>
+        
+        Expected output (a list of tuples):
+        <pre class="output">
+[
+    ('Charizard', 340), 
+    ('Blastoise', 340), 
+    ('Venusaur', 325), 
+    ('Gengar', 295), 
+    ('Pikachu', 220)
+]
+        </pre>
+    </li>
+
+    
+    <div class="note2">
+        <strong>Note on creating a sorting function:</strong>
+        <p>
+            To sort the list of tuples by total stats, you'll need to create a function that extracts the total stats from each tuple. This function will be used as the <code>key</code> parameter in the <code>sorted()</code> function.
+        </p>
+        <pre>
+<span class="keyword">def</span> <span class="function">get_total_stats</span>(pokemon_tuple):
+    <span class="comment"># Extract the total stats (second element of the tuple)</span>
+    <span class="keyword">return</span> pokemon_tuple[<span class="number">1</span>]
+
+<span class="comment"># Use the function as the key for sorting</span>
+sorted_stats = <span class="function">sorted</span>(stats_list, key=get_total_stats, reverse=<span class="number">True</span>)
+        </pre>
+        <p>
+            Remember, when passing the function as a key, you're passing the function object itself (<code>get_total_stats</code>), not calling the function (<code>get_total_stats<span class="highlight2">()</span><span> &lt;-- wrong!</span></code>).
+        </p>
+    </div>
+    
+</ol>
+
+<p>Remember to use tuple unpacking and other tuple operations to complete these tasks efficiently.</p>
+
+    
+<h2>Pokemon Data Analysis - Question 2</h2>
+
+<p>As a Pokemon researcher, you're analyzing data about Pokemon types and regions. You have been given a list of tuples containing this information.</p>
+
+<h3>Given Data:</h3>
+<pre>
+<span class="comment"># A list of tuples</span>
+<span class="comment"># Data is available on Teams (Week 08)</span>
+<span class="">pokemon_region_data</span> = [
+    (<span class="string">"Bulbasaur"</span>, <span class="string">"Grass"</span>, <span class="string">"Kanto"</span>),
+    (<span class="string">"Charmander"</span>, <span class="string">"Fire"</span>, <span class="string">"Kanto"</span>),
+    (<span class="string">"Squirtle"</span>, <span class="string">"Water"</span>, <span class="string">"Kanto"</span>),
+    (<span class="string">"Chikorita"</span>, <span class="string">"Grass"</span>, <span class="string">"Johto"</span>),
+    (<span class="string">"Cyndaquil"</span>, <span class="string">"Fire"</span>, <span class="string">"Johto"</span>),
+    (<span class="string">"Totodile"</span>, <span class="string">"Water"</span>, <span class="string">"Johto"</span>),
+    (<span class="string">"Treecko"</span>, <span class="string">"Grass"</span>, <span class="string">"Hoenn"</span>),
+    (<span class="string">"Torchic"</span>, <span class="string">"Fire"</span>, <span class="string">"Hoenn"</span>),
+    (<span class="string">"Mudkip"</span>, <span class="string">"Water"</span>, <span class="string">"Hoenn"</span>),
+    (<span class="string">"Turtwig"</span>, <span class="string">"Grass"</span>, <span class="string">"Sinnoh"</span>),
+    (<span class="string">"Chimchar"</span>, <span class="string">"Fire"</span>, <span class="string">"Sinnoh"</span>),
+    (<span class="string">"Piplup"</span>, <span class="string">"Water"</span>, <span class="string">"Sinnoh"</span>)
+]
+</pre>
+
+<div class="note">
+<strong>Note on setdefault():</strong> The <code>setdefault()</code> method is a handy way to work with dictionaries. It does two things:
+<ol>
+    <li>If the key doesn't exist in the dictionary, it adds the key with a specified default value.</li>
+    <li>It returns the value for the key, whether it already existed or was just added.</li>
+</ol>
+<p>Example:</p>
+<pre>
+<span class="">my_dict</span> = {<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>: <span class="number">2</span>}
+<span class="function">print</span>(<span class="">my_dict</span>.setdefault(<span class="string">'b'</span>, <span class="number">0</span>))  <span class="comment"># Prints: 2 (existing value)</span>
+<span class="function">print</span>(<span class="">my_dict</span>.setdefault(<span class="string">'c'</span>, <span class="number">0</span>))  <span class="comment"># Prints: 0 (new default value)</span>
+<span class="function">print</span>(<span class="">my_dict</span>)  <span class="comment"># Prints: {'a': 1, 'b': 2, 'c': 0}</span>
+</pre>
+<p>This method is particularly useful when you want to initialize a list as a value if a key doesn't exist, and then append to that list. For example:</p>
+<pre>
+<span class="comment"># Declare a new, empty dictionary</span>
+<span class="">pokemon_types</span> = {}
+
+<span class="comment"># Use setdefault() to add a new 'Fire' key with an empty list as its value
+# 1. If 'Fire' doesn't exist, it's added with [] as the value
+# 2. setdefault() returns the value for 'Fire' (new or existing)</span>
+fire_pokemon = pokemon_types.setdefault(<span class="string">'Fire'</span>, [])  
+
+<span class="comment"># Append 'Charmander' to the list of Fire-type Pokemon
+# fire_pokemon is a reference to the list in the dictionary,
+# so this change is reflected in pokemon_types</span>
+fire_pokemon.append(<span class="string">'Charmander'</span>)  
+
+<span class="function">print</span>(<span class="">pokemon_types</span>)  <span class="comment"># Output: {'Fire': ['Charmander']}</span>
+
+<span class="comment"># Add another Fire-type Pokemon to show how setdefault() works with existing keys</span>
+fire_pokemon = pokemon_types.setdefault(<span class="string">'Fire'</span>, [])  <span class="comment"># 'Fire' already exists</span>
+fire_pokemon.append(<span class="string">'Charizard'</span>)
+
+<span class="function">print</span>(<span class="">pokemon_types</span>)  <span class="comment"># Output: {'Fire': ['Charmander', 'Charizard']}</span>
+
+<span class="comment"># Add a Water-type Pokemon to demonstrate setdefault() with a new key</span>
+water_pokemon = pokemon_types.setdefault(<span class="string">'Water'</span>, [])
+water_pokemon.append(<span class="string">'Squirtle'</span>)
+
+<span class="function">print</span>(<span class="">pokemon_types</span>)  <span class="comment"># Output: {'Fire': ['Charmander', 'Charizard'], 'Water': ['Squirtle']}</span>
+</pre>
+</div>
+
+<h3>Tasks:</h3>
+
+<ol>
+    <li>Create a dictionary where the keys are the regions and the values are lists of Pokemon names found in that region. Use the following structure:
+    <pre>
+<span class="">region_pokemon</span> = {}
+<span class="keyword">for</span> pokemon, _, region <span class="keyword">in</span> pokemon_region_data:
+    <span class="your-code-here"># Your code here</span>
+    <span class="comment"># Hint: Use .setdefault() method and .append()</span>
+
+<span class="function">print</span>(region_pokemon)
+    </pre>
+    Expected output:
+        <pre  class="output">
+{
+    'Kanto': ['Bulbasaur', 'Charmander', 'Squirtle'],
+    'Johto': ['Chikorita', 'Cyndaquil', 'Totodile'],
+    'Hoenn': ['Treecko', 'Torchic', 'Mudkip'],
+    'Sinnoh': ['Turtwig', 'Chimchar', 'Piplup']
+}
+        </pre>
+    </li>
+
+
+    <li>Print the first two Pokemon from each region using list slicing:
+    <pre>
+<span class="keyword">for</span> region, pokemon_list <span class="keyword">in</span> region_pokemon.items():
+    <span class="your-code-here"># Your code here</span>
+    </pre>
+    Expected output:
+    <div class="output">
+    Kanto: ['Bulbasaur', 'Charmander']
+    <br />Johto: ['Chikorita', 'Cyndaquil']
+    <br />Hoenn: ['Treecko', 'Torchic']
+    <br />Sinnoh: ['Turtwig', 'Chimchar']
+    </div>
+    </li>
+
+    <li>Count how many Pokemon of each type (Grass, Fire, Water) are in the dataset:
+    <pre>
+<span class="comment"># Create a new dictionary to hold the counts for each type of Pokemon</span>
+<span class="">type_count</span> = {<span class="string">"Grass"</span>: <span class="number">0</span>, <span class="string">"Fire"</span>: <span class="number">0</span>, <span class="string">"Water"</span>: <span class="number">0</span>}
+
+<span class="keyword">for</span> _, pokemon_type, _ <span class="keyword">in</span> pokemon_region_data:
+    <span class="your-code-here"># Your code here</span>
+    <span class="comment"># Hint: Use dictionary keys to update counts</span>
+
+<span class="function">print</span>(type_count)
+    </pre>
+    Expected output:
+    <div class="output">
+    {'Grass': 4, 'Fire': 4, 'Water': 4}
+    </div>
+    </li>
+</ol>
+
+<p>Remember to use loops and dictionary operations to complete these tasks.</p>
+
+
+
+<h2>Pokemon Team Analysis: Working with Lists of Dictionaries - Question 3</h2>
+
+<p>As a Pokemon researcher, you're analyzing data about different trainers and their Pokemon teams. You have information stored in a list of dictionaries, where each dictionary represents a trainer and their Pokemon team.</p>
+
+<h3>Given Data:</h3>
+<pre>
+<span class="comment"># A list of dictionaries</span>
+<span class="comment"># Data is available on Teams (Week 08)</span>
+<span class="">trainer_data</span> = [
+    {
+        <span class="string">"name"</span>: <span class="string">"Ash"</span>,
+        <span class="string">"age"</span>: <span class="number">14</span>,
+        <span class="string">"team"</span>: [
+            {<span class="string">"name"</span>: <span class="string">"Pikachu"</span>, <span class="string">"type"</span>: <span class="string">"Electric"</span>, <span class="string">"level"</span>: <span class="number">30</span>},
+            {<span class="string">"name"</span>: <span class="string">"Charizard"</span>, <span class="string">"type"</span>: <span class="string">"Fire/Flying"</span>, <span class="string">"level"</span>: <span class="number">36</span>},
+            {<span class="string">"name"</span>: <span class="string">"Squirtle"</span>, <span class="string">"type"</span>: <span class="string">"Water"</span>, <span class="string">"level"</span>: <span class="number">28</span>}
+        ]
+    },
+    {
+        <span class="string">"name"</span>: <span class="string">"Misty"</span>,
+        <span class="string">"age"</span>: <span class="number">15</span>,
+        <span class="string">"team"</span>: [
+            {<span class="string">"name"</span>: <span class="string">"Staryu"</span>, <span class="string">"type"</span>: <span class="string">"Water"</span>, <span class="string">"level"</span>: <span class="number">32</span>},
+            {<span class="string">"name"</span>: <span class="string">"Gyarados"</span>, <span class="string">"type"</span>: <span class="string">"Water/Flying"</span>, <span class="string">"level"</span>: <span class="number">35</span>},
+            {<span class="string">"name"</span>: <span class="string">"Psyduck"</span>, <span class="string">"type"</span>: <span class="string">"Water"</span>, <span class="string">"level"</span>: <span class="number">20</span>}
+        ]
+    },
+    {
+        <span class="string">"name"</span>: <span class="string">"Brock"</span>,
+        <span class="string">"age"</span>: <span class="number">18</span>,
+        <span class="string">"team"</span>: [
+            {<span class="string">"name"</span>: <span class="string">"Onix"</span>, <span class="string">"type"</span>: <span class="string">"Rock/Ground"</span>, <span class="string">"level"</span>: <span class="number">34</span>},
+            {<span class="string">"name"</span>: <span class="string">"Geodude"</span>, <span class="string">"type"</span>: <span class="string">"Rock/Ground"</span>, <span class="string">"level"</span>: <span class="number">30</span>},
+            {<span class="string">"name"</span>: <span class="string">"Zubat"</span>, <span class="string">"type"</span>: <span class="string">"Poison/Flying"</span>, <span class="string">"level"</span>: <span class="number">25</span>}
+        ]
+    }
+]
+</pre>
+
+<h3>Tasks:</h3>
+
+<ol>
+    <li>Create a function that takes a trainer's dictionary and returns a formatted string with the trainer's name, age, and the number of Pokemon in their team. Use this function to print information for all trainers in the dataset.
+    <pre>
+<span class="keyword">def</span> <span class="function">format_trainer_info</span>(trainer):
+<span class="comment"># Get the trainer's name</span>
+name = <span class="your-code-here">Your code here</span>
+
+<span class="comment"># Get the trainer's age</span>
+age = <span class="your-code-here">Your code here</span>
+
+<span class="comment"># Get the number of Pokemon in the trainer's team</span>
+team_size = <span class="function">len</span>(<span class="your-code-here">Your code here</span>)
+
+<span class="comment"># Format and return the string</span>
+<span class="keyword">return</span> <span class="your-code-here">Your code here</span>
+
+<span class="comment"># Use your function to print info for all trainers</span>
+<span class="keyword">for</span> trainer <span class="keyword">in</span> trainer_data:
+<span class="function">print</span>(<span class="your-code-here">Your code here</span>)
+    </pre>
+    Expected output:
+    <div class="output">
+    Ash is 14 years old and has 3 Pokemon.
+    <br />Misty is 15 years old and has 3 Pokemon.
+    <br />Brock is 18 years old and has 3 Pokemon.
+    </div>
+    </li>
+
+    <li>Find the trainer with the highest average Pokemon level.
+    <pre>
+<span class="comment"># Initialize variables to keep track of the highest average and the corresponding trainer</span>
+highest_avg = <span class="number">0</span>
+highest_avg_trainer = <span class="string">""</span>
+
+<span class="comment"># Loop through each trainer in the dataset</span>
+<span class="keyword">for</span> trainer <span class="keyword">in</span> trainer_data:
+    <span class="comment"># Calculate the total level of all Pokemon in the trainer's team</span>
+    total_level = <span class="number">0</span>
+    <span class="keyword">for</span> pokemon <span class="keyword">in</span> trainer[<span class="string">"team"</span>]:
+        total_level += <span class="your-code-here">Your code here</span>
+
+    <span class="comment"># Calculate the average level</span>
+    avg_level = <span class="your-code-here">Your code here</span>
+
+    <span class="comment"># If this average is higher than the current highest, update our tracking variables</span>
+    <span class="keyword">if</span> avg_level > highest_avg:
+        highest_avg = <span class="your-code-here">Your code here</span>
+        highest_avg_trainer = <span class="your-code-here">Your code here</span>
+
+
+<span class="comment"># Print the result</span>
+print(<span class="string">f"The trainer with the highest average Pokemon level is {highest_avg_trainer} with an average level of {highest_avg:.2f}."</span>)
+    </pre>
+    Expected output:
+    <div class="output">
+    The trainer with the highest average Pokemon level is Misty with an average level of 29.00.
+    </div>
+    </li>
+
+    <li>Create a dictionary that counts the number of Pokemon of each type across all trainers' teams. If a Pokemon has multiple types (e.g., "Fire/Flying"), count it for both types.
+    <pre>
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+
+<span class="comment"># Initialize a defaultdict to count Pokemon types</span>
+type_count = <span class="function">defaultdict</span>(<span class="function">int</span>)
+
+<span class="comment"># Loop through each trainer</span>
+<span class="keyword">for</span> trainer <span class="keyword">in</span> trainer_data:
+    <span class="comment"># Loop through each Pokemon in the trainer's team</span>
+    <span class="keyword">for</span> pokemon <span class="keyword">in</span> trainer[<span class="string">"team"</span>]:
+        <span class="comment"># Get the Pokemon's type(s)</span>
+        types = pokemon[<span class="string">"type"</span>].split(<span class="string">"/"</span>)
+        
+        <span class="comment"># Increment the count for each type</span>
+        <span class="keyword">for</span> poke_type <span class="keyword">in</span> types:
+            <span class="your-code-here">Your code here</span>
+
+<span class="comment"># Convert defaultdict to regular dict for printing</span>
+type_count = <span class="function">dict</span>(type_count)
+print(type_count)
+    </pre>
+    Expected output:
+        <pre  class="output">
+{
+    'Electric': 1,
+    'Fire': 1,
+    'Flying': 3,
+    'Water': 4,
+    'Rock': 2,
+    'Ground': 2,
+    'Poison': 1
+}
+        </pre>
+    </li>
+
+    <div class="note">
+    <strong>Note on defaultdict:</strong>
+    <p>
+    <code>defaultdict</code> is a subclass of Python's built-in <code>dict</code> class. It's used to provide a default value for a nonexistent key, instead of raising a <code>KeyError</code>. 
+    </p>
+    <p>
+    When you access a key that doesn't exist in a <code>defaultdict</code>, it automatically creates that key with a default value (specified by the function passed to <code>defaultdict</code>). This is particularly useful when you're counting or accumulating values.
+    </p>
+    <pre>
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+
+<span class="comment"># Create a defaultdict with int as the default_factory</span>
+d = <span class="function">defaultdict</span>(<span class="function">int</span>)
+
+<span class="comment"># Increment counts, even for keys that don't exist yet</span>
+words = [<span class="string">'apple'</span>, <span class="string">'banana'</span>, <span class="string">'apple'</span>, <span class="string">'cherry'</span>, <span class="string">'banana'</span>, <span class="string">'date'</span>]
+<span class="keyword">for</span> word <span class="keyword">in</span> words:
+    d[word] += <span class="number">1</span>
+
+<span class="function">print</span>(<span class="function">dict</span>(d))  <span class="comment"># Output: {'apple': 2, 'banana': 2, 'cherry': 1, 'date': 1}</span>
+    </pre>
+    <p>
+    In this example, we don't need to check if a key exists before incrementing its count. The <code>defaultdict</code> automatically initializes the count to 0 for new keys.
+    </p>
+    </div>
+
+    <li>Write a function that takes a trainer's name and a Pokemon type, and returns a list of all Pokemon of that type in the trainer's team. If the trainer doesn't have any Pokemon of that type, return an empty list. Test your function with different trainers and types.
+    <pre>
+<span class="keyword">def</span> <span class="function">get_pokemon_by_type</span>(trainer_name, pokemon_type):
+    <span class="comment"># Initialize an empty list to store matching Pokemon</span>
+    matching_pokemon = []
+
+    <span class="comment"># Loop through each trainer to find the one with the given name</span>
+    <span class="keyword">for</span> trainer <span class="keyword">in</span> trainer_data:
+        <span class="keyword">if</span> trainer[<span class="string">"name"</span>] == trainer_name:
+            <span class="comment"># Loop through each Pokemon in the trainer's team</span>
+            <span class="keyword">for</span> pokemon <span class="keyword">in</span> trainer[<span class="string">"team"</span>]:
+                <span class="comment"># Check if the Pokemon's type matches the given type</span>
+                <span class="keyword">if</span> pokemon_type <span class="keyword">in</span> pokemon[<span class="string">"type"</span>]:
+                    <span class="your-code-here">Your code here</span>
+
+    <span class="comment"># Return the list of matching Pokemon</span>
+    <span class="keyword">return</span> matching_pokemon
+
+<span class="comment"># Test your function</span>
+<span class="function">print</span>(<span class="function">get_pokemon_by_type</span>(<span class="string">"Misty"</span>, <span class="string">"Water"</span>))
+<span class="function">print</span>(<span class="function">get_pokemon_by_type</span>(<span class="string">"Ash"</span>, <span class="string">"Electric"</span>))
+<span class="function">print</span>(<span class="function">get_pokemon_by_type</span>(<span class="string">"Brock"</span>, <span class="string">"Fire"</span>))
+        </pre>
+    Expected output:
+        <pre  class="output">
+[
+    {'name': 'Staryu', 'type': 'Water', 'level': 32},
+    {'name': 'Gyarados', 'type': 'Water/Flying', 'level': 35},
+    {'name': 'Psyduck', 'type': 'Water', 'level': 20}
+]
+        </pre>
+    </li>
+</ol>
+
+<p>Remember to use dictionary and list operations efficiently to complete these tasks. Pay special attention to nested data structures and how to access and manipulate them.</p>
+
+
+</body>
+</html>
